@@ -5,7 +5,7 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
 export default class Patient extends BaseModel {
   @column({ isPrimary: true })
-  declare patient_id: number
+  declare id: number
 
   @column({})
   declare patient_name: string

@@ -5,12 +5,12 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('appointment_id').primary
+      table.increments('id').primary
       table
         .integer('doctor_id')
         .unsigned()
         .notNullable()
-        .references('doctor_id')
+        .references('id')
         .inTable('doctors')
         .onDelete('CASCADE')
         .index()
@@ -18,7 +18,7 @@ export default class extends BaseSchema {
         .integer('patient_id')
         .unsigned()
         .notNullable()
-        .references('patient_id')
+        .references('id')
         .inTable('patients')
         .onDelete('CASCADE')
         .index()
@@ -26,7 +26,7 @@ export default class extends BaseSchema {
         .integer('hospital_id')
         .unsigned()
         .notNullable()
-        .references('hospital_id')
+        .references('id')
         .inTable('hospitals')
         .onDelete('CASCADE')
         .index()

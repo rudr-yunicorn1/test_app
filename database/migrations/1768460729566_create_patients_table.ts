@@ -5,7 +5,7 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('patient_id').primary
+      table.increments('id').primary
       table.string('patient_name').notNullable
       table.string('father_name').notNullable
       table.integer('age').notNullable
@@ -13,7 +13,7 @@ export default class extends BaseSchema {
         .integer('doctor_id')
         .unsigned()
         .notNullable()
-        .references('doctor_id')
+        .references('id')
         .inTable('doctors')
         .onDelete('CASCADE')
         .index()

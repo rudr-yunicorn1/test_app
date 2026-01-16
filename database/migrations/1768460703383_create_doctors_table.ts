@@ -5,13 +5,13 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('doctor_id').primary
+      table.increments('id').primary
       table.string('doctor_name').notNullable
       table
         .integer('hospital_id')
         .unsigned()
         .notNullable()
-        .references('hospital_id')
+        .references('id')
         .inTable('hospitals')
         .onDelete('CASCADE')
         .index()

@@ -2,7 +2,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 export default class Hospital extends BaseModel {
   @column({ isPrimary: true })
-  declare hospital_id: number
+  declare id: number
 
   @column({})
   declare hospital_name: string

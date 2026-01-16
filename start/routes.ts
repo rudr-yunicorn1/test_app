@@ -18,7 +18,7 @@ import router from '@adonisjs/core/services/router'
 //   }
 // })
 
-// router.get('/user', '#controllers/users_controller.index') //here iam using the magic string for lazy loading
+// router.get('/user',  //here iam using the magic string for lazy loading
 // router.resource('post', PostsController) //here iam using the resource route it contain all the crud methord we can use it without methord definig
 // router.shallowResource('post.comment', PostCommentsController) // here iam using the shallow resource to use it as only specific call
 // // router.resource('users', UsersController).use(['*'], middleware.auth()) here we are using the middleware to use all the api
@@ -48,5 +48,8 @@ router
 router
   .group(() => {
     router.get('/vaccinated', '#controllers/tasks_controller.vaccinated')
+    router.get('/doc_patient', '#controllers/tasks_controller.doc_patient')
+    router.get('/age_details/:age', '#controllers/tasks_controller.age_details')
+    router.get('/ststus/:id', '#controllers/tasks_controller.status')
   })
   .prefix('/task')
