@@ -23,7 +23,7 @@ export default class AppointmentController {
   }
 
   async show_id({ response, params }: HttpContext) {
-    const appointment = await Appointment.query().where('appointment_id', params.id).first()
+    const appointment = await Appointment.query().where('id', params.id).first()
 
     if (appointment) {
       return response.json({ appointment })
@@ -32,17 +32,17 @@ export default class AppointmentController {
   }
   async edit({ request, response, params }: HttpContext) {
     const data = request.validateUsing(ValidatorUpdate)
-    const appointment = await Appointment.query().where('appointment_id', params.id).first()
+    const appointment = await Appointment.query().where('id', params.id).first()
     if (appointment) {
-      await Appointment.query().where('appointment_id', params.id).update(data)
+      await Appointment.query().where('id', params.id).update(data)
       return response.redirect('appointment/show')
     }
     return response.badRequest({ messsage: ` the id ${params.id} is not in the list` })
   }
   async distroy({ response, params }: HttpContext) {
-    const data = await Appointment.query().where('appointment_id', params.id).first()
+    const data = await Appointment.query().where('id', params.id).first()
     if (data) {
-      await Appointment.query().where('appointment_id', params.id).delete()
+      await Appointment.query().where('id', params.id).delete()
       return response.redirect('appointment/show')
     }
     return response.badRequest({ message: `the appointment id ${params.id} is not in the list` })

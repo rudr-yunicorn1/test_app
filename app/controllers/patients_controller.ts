@@ -30,7 +30,7 @@ export default class PatientsController {
     return response.badRequest({ messages: 'badrequest' })
   }
   async show_id({ response, params }: HttpContext) {
-    const patient = await Patients.query().where('patient_id', params.id).first()
+    const patient = await Patients.query().where('id', params.id).first()
 
     if (patient) {
       return response.json({ patient })
@@ -39,20 +39,21 @@ export default class PatientsController {
   }
   async edit({ request, response, params }: HttpContext) {
     const user = request.validateUsing(PatientValidatorUpdate)
-    const patient = await Patients.query().where('patient_id', params.id).first()
+    const patient = await Patients.query().where('id', params.id).first()
     if (patient) {
       return response.badRequest({ messsage: ` the id ${params.id} is not in the list` })
     }
     // const patient = await Patients.query().where('patient_id', params.id).update(user)
     if (user) {
-      await Patients.query().where('patient_id', params.id).update(user)
+      await Patients.query().where('id', params.id).update(user)
       return response.redirect('patient/show')
     }
   }
   async distroy({ response, params }: HttpContext) {
-    const patient = await Patient.query().where('patient_id', params.id).delete()
-    if (!patient) {
-      return response.json({ message: 'patient is deleted' })
+    const data = await Patient.query().where('id', params.id).delete()
+    if (data) {
+      await Patient.query().where('id', params.id).delete()
+      return response.redirect('patient/show')
     }
     return response.badRequest({ message: `the patient id ${params.id} is not in the list` })
   }
