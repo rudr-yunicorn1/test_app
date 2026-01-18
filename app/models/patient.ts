@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import Doctors from './doctor.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Appointment from './appointment.js'
 
 export default class Patient extends BaseModel {
   @column({ isPrimary: true })
@@ -19,16 +20,17 @@ export default class Patient extends BaseModel {
   @column({})
   declare doctor_id: number
 
-  @belongsTo(() => Doctors, {
-    foreignKey: 'doctor_id',
-  })
+  @belongsTo(() => Doctors)
   declare doctor: BelongsTo<typeof Doctors>
 
   @column({})
   declare vaccine_name: string
 
   @column({})
-  declare phone_number: number
+  declare phone_number: string
+
+  @hasMany(() => Appointment)
+  declare Appointment: HasMany<typeof Appointment>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

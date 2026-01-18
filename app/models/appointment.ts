@@ -18,19 +18,13 @@ export default class Appointment extends BaseModel {
   @column({})
   declare hospital_id: number
 
-  @belongsTo(() => Doctor, {
-    foreignKey: 'doctor_id',
-  })
+  @belongsTo(() => Doctor)
   declare doctor: BelongsTo<typeof Doctor>
 
-  @belongsTo(() => Patient, {
-    foreignKey: 'patient_id',
-  })
+  @belongsTo(() => Patient)
   declare patient: BelongsTo<typeof Patient>
 
-  @belongsTo(() => Hospital, {
-    foreignKey: 'hospital_id',
-  })
+  @belongsTo(() => Hospital)
   declare hospital: BelongsTo<typeof Hospital>
 
   @column({})

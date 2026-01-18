@@ -10,6 +10,10 @@
 // const PostsController = () => import('#controllers/posts_controller')
 // const PostCommentsController = () => import('#controllers/post_comments_controller')
 
+const PatientsController = () => import('#controllers/patients_controller')
+const AppointmentController = () => import('#controllers/appointments_controller')
+const TasksController = () => import('#controllers/tasks_controller')
+const VaccinesController = () => import('#controllers/vaccines_controller')
 import router from '@adonisjs/core/services/router'
 
 // router.get('/', async () => {
@@ -24,32 +28,51 @@ import router from '@adonisjs/core/services/router'
 // // router.resource('users', UsersController).use(['*'], middleware.auth()) here we are using the middleware to use all the api
 
 // form here iam gonna make the controller
-
 router
   .group(() => {
-    router.get('/show', '#controllers/patients_controller.show')
-    router.post('/store', '#controllers/patients_controller.store')
-    router.get('/show/:id', '#controllers/patients_controller.show_id')
-    router.put('/update/:id', '#controllers/patients_controller.edit')
-    router.delete('/delete/:id', '#controllers/patients_controller.distroy')
-  })
-  .prefix('/patient')
+    router
+      .group(() => {
+        router.get('/show', [PatientsController, 'show'])
+        router.post('/store', [PatientsController, 'store'])
+        router.get('/show/:id', [PatientsController, 'show_id'])
+        router.put('/update/:id', [PatientsController, 'edit'])
+        router.delete('/delete/:id', [PatientsController, 'destroy'])
+        router.get('/export', [PatientsController, 'export'])
+      })
+      .prefix('/patient')
 
-router
-  .group(() => {
-    router.get('/show', '#controllers/appointments_controller.show')
-    router.post('/store', '#controllers/appointments_controller.store')
-    router.get('/show/:id', '#controllers/appointments_controller.show_id')
-    router.put('/update/:id', '#controllers/appointments_controller.edit')
-    router.delete('/delete/:id', '#controllers/appointments_controller.distroy')
-  })
-  .prefix('/appointment')
+    router
+      .group(() => {
+        router.get('/show', [AppointmentController, 'show'])
+        router.post('/store', [AppointmentController, 'store'])
+        router.get('/show/:id', [AppointmentController, 'show_id'])
+        router.put('/update/:id', [AppointmentController, 'edit'])
+        router.delete('/delete/:id', [AppointmentController, 'destroy'])
+        router.get('/pdfdownload', [AppointmentController, 'pdfdownload'])
+      })
+      .prefix('/appointment')
 
-router
-  .group(() => {
-    router.get('/vaccinated', '#controllers/tasks_controller.vaccinated')
-    router.get('/doc_patient', '#controllers/tasks_controller.doc_patient')
-    router.get('/age_details/:age', '#controllers/tasks_controller.age_details')
-    router.get('/ststus/:id', '#controllers/tasks_controller.status')
+    router
+      .group(() => {
+        router.get('/show', [VaccinesController, 'show'])
+        router.post('/store', [VaccinesController, 'store'])
+        router.get('/show/:id', [VaccinesController, 'show_id'])
+        router.put('/update/:id', [VaccinesController, 'edit'])
+        router.delete('/delete/:id', [VaccinesController, 'destroy'])
+      })
+      .prefix('/vaccine')
+
+    router
+      .group(() => {
+        //this will give us the vaccinated patient details
+        router.get('/vaccinated', [TasksController, 'vaccinated'])
+        //this will give us the patient belongs to which doctor
+        router.get('/doc_patient', [TasksController, 'doc_patient'])
+        //the below route will provide the details of the patient in particular age
+        router.get('/age_details/:age', [TasksController, 'age_details'])
+        //the below route will help us to change the status of appointment
+        router.get('/status/:id', [TasksController, 'status'])
+      })
+      .prefix('/task')
   })
-  .prefix('/task')
+  .prefix('api')
