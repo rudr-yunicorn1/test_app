@@ -18,7 +18,7 @@ export default class extends BaseSchema {
         .onDelete('CASCADE')
         .index()
       table.string('vaccine_name').notNullable().defaultTo('zero')
-      table.integer('phone_number').notNullable()
+      table.string('phone_number', 10).notNullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
