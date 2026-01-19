@@ -4,7 +4,9 @@ import { ValidatorCreate, ValidatorUpdate } from '#validators/appointment'
 import { AppointmentService } from '#services/appointment_service'
 import { PassThrough } from 'node:stream'
 import PDFDocument from 'pdfkit'
+import { inject } from '@adonisjs/core'
 
+@inject()
 export default class AppointmentController {
   constructor(private appointmentServices: AppointmentService) {}
 
@@ -83,7 +85,8 @@ export default class AppointmentController {
       const stream = new PassThrough()
       doc.pipe(stream)
 
-      doc.fontSize(12)
+      doc.fontSize(18).fillColor('#0f172a').text('Users Report', { align: 'center' })
+      doc.moveDown(0.5)
 
       appointments.forEach((appointment, index) => {
         doc
@@ -94,6 +97,8 @@ export default class AppointmentController {
           .text(`Status ID: ${appointment.status_id}`)
           .moveDown()
       })
+
+      this.drawAppointmentTable(doc)
       doc.end()
 
       response.header(`Content-Type`, 'application/pdf')
@@ -102,5 +107,26 @@ export default class AppointmentController {
     } catch (error) {
       return response.status(500).json({ message: error })
     }
+  }
+
+  private drawAppointmentTable(doc: PDFKit.PDFDocument) {
+    const startX = 50
+    const startY = doc.y + 10
+    let currentY = startY
+
+    const colWidths = [40, 120, 150, 100, 80]
+    const rowHeight = 20
+    const headerColor = '#1e293b'
+    const borderColor = '#cbd5e1'
+
+    // Draw header background
+    doc
+      .rect(
+        startX,
+        currentY,
+        colWidths.reduce((a, b) => a + b, 0),
+        rowHeight
+      )
+      .fill(headerColor)
   }
 }

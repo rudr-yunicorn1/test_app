@@ -3,9 +3,16 @@ import Patients from '#models/patient'
 import { PatientValidatorCreate, PatientValidatorUpdate } from '#validators/patient'
 import { PatientService } from '#services/patient_service'
 import ExcelJS from 'exceljs'
+import { inject } from '@adonisjs/core'
 
+@inject()
 export default class PatientsController {
   constructor(private patientServices: PatientService) {}
+
+  private styleExcelHeader(worksheet: ExcelJS.Worksheet) {
+    const headerRow = worksheet.getRow(1)
+    headerRow.height = 25
+  }
 
   async show({ response }: HttpContext) {
     try {
@@ -97,6 +104,9 @@ export default class PatientsController {
           updatedAt: patient.updatedAt?.toFormat('yyyy-MM-dd HH:mm:ss') || '',
         })
       })
+
+      worksheet.getRow(1).font = { bold: true }
+      this.styleExcelHeader(worksheet)
 
       const buffer = await workbook.xlsx.writeBuffer()
 
